@@ -25,63 +25,65 @@ public class Filtter extends OncePerRequestFilter {
     UserModel userModel;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var autorizacao = request.getHeader("Authorization");
-        filterChain.doFilter(request, response);
-        System.out.println("autorizacao: ");
-        System.out.println(autorizacao);
+        var Server=request.getServletPath();
+        if(Server.equals("/DeadUser/CreateDeadUser") || Server.equals("/Sector/CreateSector")) {
 
-        var Autoencode = autorizacao.substring("Basic".length()).trim();
-        System.out.println("autorizacao: ");
-        System.out.println(Autoencode);
 
-        byte[] Autoencoder = Base64.getDecoder().decode(Autoencode);
-        System.out.println("Autorização");
-        System.out.println(Autoencoder);
+            var autorizacao = request.getHeader("Authorization");
+            filterChain.doFilter(request, response);
+            System.out.println("autorizacao: ");
+            System.out.println(autorizacao);
 
-        var autorizacaoinit = new String(Autoencoder);
-        System.out.println(autorizacaoinit);
-        String[] credenciais = autorizacaoinit.split(":");
-        String usuario = credenciais[0];
-        String senha = credenciais[1];
-        System.out.println(usuario);
-        System.out.println(senha);
+            var Autoencode = autorizacao.substring("Basic".length()).trim();
+            System.out.println("autorizacao: ");
+            System.out.println(Autoencode);
 
-        var user = this.userRepository.findByUsername(usuario);
-        if (user == null) {
-            response.sendError(401, "Nao funciona, Usuario inexistente");
-        } else {
-            var senhaverifica = BCrypt.verifyer().verify(senha.toCharArray(), user.getPassword());
-            if (senhaverifica.verified) {
-                //filterChain.doFilter(request, response);
-                var deadsector = request.getParameter("fksector");
-                var sector= this.sectorRepository.findBysectorname(deadsector);
-                if (sector == null) {
-                    response.sendError(401, "Nao funciona, Setor inexistente");
-                } else {
-                    //filterChain.doFilter(request, response);
-                    var deadUser= request.getParameter("fkuser");
-                    var FKuser= this.userRepository.findByUsername(deadUser);
-                    if (FKuser == null) {
-                        response.sendError(401, "Nao funciona, Usuario inexistente");
-                    }   else {
-                        //filterChain.doFilter(request, response);
-                        var digger = request.getParameter("gravedigger");
-                        var gravedigger= this.userRepository.findByUsername(digger);
-                        if (gravedigger == null) {
-                            response.sendError(401, "Nao funciona, Coveiro inexistente");
-                        } else {
-                            var role= this.userModel.getRole();
-                            if (role == "coveiro") {
-                                filterChain.doFilter(request, response);
-                            } else {
-                                response.sendError(401, "Usario escolhido não é um coveiro");
-                            }
-                        }
-                    }
-                }
+            byte[] Autoencoder = Base64.getDecoder().decode(Autoencode);
+            System.out.println("Autorização");
+            System.out.println(Autoencoder);
+
+            var autorizacaoinit = new String(Autoencoder);
+            System.out.println(autorizacaoinit);
+            String[] credenciais = autorizacaoinit.split(":");
+            String usuario = credenciais[0];
+            String senha = credenciais[1];
+            System.out.println(usuario);
+            System.out.println(senha);
+
+            var user = this.userRepository.findByUsername(usuario);
+            if (user == null) {
+                response.sendError(401, "Nao funciona, Usuario inexistente");
             } else {
-                response.sendError(401, "Senha Incorreta");
+                var senhaverifica = BCrypt.verifyer().verify(senha.toCharArray(), user.getPassword());
+                if (senhaverifica.verified) {
+                    request.setAttribute("fkuser", user.getIduser());
+                    filterChain.doFilter(request, response);
+                    //var deadsector = request.getAttribute("fksector");
+
+                   // var sector = this.sectorRepository.findBysectorname(deadsector.toString());
+                  //  if (sector == null) {
+                    //    response.sendError(401, "Nao funciona, Setor inexistente");
+                   // } else {
+                     //       var digger = request.getAttribute("gravedigger");
+                       //     var gravedigger = this.userRepository.findByUsername(digger.toString());
+                         //   if (gravedigger == null) {
+                           //     response.sendError(401, "Nao funciona, Coveiro inexistente");
+                            //} else {
+                              //  var role = this.userModel.getRole();
+                                //if (role == "coveiro") {
+
+                               // } else {
+                              //      response.sendError(401, "Usario escolhido não é um coveiro");
+                             //   }
+                           // }
+                        //}
+
+                } else {
+                    response.sendError(401, "Senha Incorreta");
+                }
             }
+        } else {
+            filterChain.doFilter(request, response);
         }
     }
 }
