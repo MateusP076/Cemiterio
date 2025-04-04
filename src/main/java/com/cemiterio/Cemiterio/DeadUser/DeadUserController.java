@@ -29,10 +29,10 @@ public class DeadUserController {
         } else {
 //            var hahsdescription= BCrypt.withDefaults().hashToString(12, deadUserModel.getDescription().toCharArray());
 //            deadUserModel.setDescription(hahsdescription);
+
             var fkuser=request.getSession().getAttribute("user");
             deadUserModel.setFkuser((UUID) fkuser);
             var salvar = this.iDeadUserRepository.save(deadUserModel);
-            System.out.println("Chegou no controller"+ request.getAttribute("fkuser"));
             return ResponseEntity.status(HttpStatus.CREATED).body(salvar);
         }
 

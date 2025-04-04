@@ -42,7 +42,11 @@ public class Filtter extends OncePerRequestFilter {
                 var senhaverifica = BCrypt.verifyer().verify(senha.toCharArray(), user.getPassword());
                 if (senhaverifica.verified) {
                     request.getSession().setAttribute("user", user.getiduser());
-                    filterChain.doFilter(request, response);
+                    filterChain.doFilter(request, response);                  
+                           
+                } else {
+                    response.sendError(401, "Senha Incorreta");
+
                 }
             }
         } else {
