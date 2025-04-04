@@ -19,11 +19,11 @@ public class UserModel {
     private String address;
     private String role;
 
-    public UUID getIduser() {
+    public UUID getiduser() {
         return iduser;
     }
 
-    public void setIduser(UUID iduser) {
+    public void setiduser(UUID iduser) {
         this.iduser = iduser;
     }
 

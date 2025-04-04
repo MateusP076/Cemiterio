@@ -16,7 +16,7 @@ public class DeadUserModel {
     private String description;
     private String gravedigger;
     private String fksector;
-    private String fkuser;
+    private UUID fkuser;
 
     public UUID getIdDeadUser() {
         return idDeadUser;
@@ -50,11 +50,11 @@ public class DeadUserModel {
         this.fksector = fksector;
     }
 
-    public String getFkuser() {
+    public UUID getFkuser() {
         return fkuser;
     }
 
-    public void setFkuser(String fkuser) {
+    public void setFkuser(UUID fkuser) {
         this.fkuser = fkuser;
     }
 

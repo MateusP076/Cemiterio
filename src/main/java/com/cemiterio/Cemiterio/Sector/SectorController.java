@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/Sector")
@@ -30,6 +31,16 @@ public class SectorController {
     @GetMapping("/ListSector")
     public List<SectorModel> listSector() {
         return this.sectorRepository.findAll();
+    }
+
+    @PutMapping("/Update")
+    public ResponseEntity update(@RequestBody SectorModel sectorModel) {
+        var criado= this.sectorRepository.save(sectorModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(criado);
+    }
+    @DeleteMapping("/Delete/{iduser}")
+    public void delete(@PathVariable UUID iduser) {
+        sectorRepository.deleteById(iduser);
     }
 }
 

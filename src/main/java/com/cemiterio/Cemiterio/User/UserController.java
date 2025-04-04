@@ -46,5 +46,6 @@ public class UserController {
     @DeleteMapping("/Delete/{iduser}")
     public void delete(@PathVariable UUID iduser) {
         iuserRepository.deleteById(iduser);
+        ResponseEntity.status(HttpStatus.CREATED).body("Excluido com sucesso");
     }
 }
