@@ -1,11 +1,13 @@
 package com.cemiterio.Cemiterio.User;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.UUID;
@@ -46,5 +48,38 @@ public class UserController {
     @DeleteMapping("/Delete/{iduser}")
     public void delete(@PathVariable UUID iduser) {
         iuserRepository.deleteById(iduser);
+    }
+
+
+    @GetMapping("/cadastro")
+    public ModelAndView Cadastro(){
+        ModelAndView mv= new ModelAndView("cadastroUser");
+        mv.addObject("UserModel", new UserModel());
+        return mv;
+    }
+
+
+    @GetMapping("/atualizaUser")
+    public ModelAndView Atualizar(){
+      ModelAndView mv= new ModelAndView("userAtualizar");
+      return mv;  
+    }
+    @GetMapping("/pesquisarUser")
+    public ModelAndView Pesquisar(){
+        ModelAndView mv= new ModelAndView( "pesquisarUser");
+        return mv;
+    }
+
+    @GetMapping("/excluirUser")
+    public ModelAndView Exluir(){
+        ModelAndView mv= new ModelAndView("excluirUser");
+        return mv;
+    }
+    
+    @GetMapping("/inicio")
+    public ModelAndView PaginaInicial(){
+        ModelAndView mv= new ModelAndView("index");
+        mv.addObject("UserModel", new UserModel());
+        return mv;
     }
 }
