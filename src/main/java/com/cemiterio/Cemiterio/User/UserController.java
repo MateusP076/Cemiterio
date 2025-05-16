@@ -1,15 +1,16 @@
 package com.cemiterio.Cemiterio.User;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static at.favre.lib.crypto.bcrypt.BCrypt.withDefaults;
@@ -23,18 +24,18 @@ public class UserController {
     public String info() {
         return "Para mais realizar o cadastro de usuario acesse (/User/NewUser)";
     }
-    @PostMapping("/NewUser")
-    public ResponseEntity newUser(@RequestBody UserModel userModel, HttpServletRequest request) {
-        var created = this.iuserRepository.findByUsername(userModel.getUsername());
-        if (created != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario ja existente");
-        } else {
-            var hahssenha= BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray());
-            userModel.setPassword(hahssenha);
-            var salvar = this.iuserRepository.save(userModel);
-            return ResponseEntity.status(HttpStatus.CREATED).body(salvar);
-        }
-    }
+//    @PostMapping("/NewUser")
+//    public ResponseEntity newUser(@RequestBody UserModel userModel, HttpServletRequest request) {
+//        var created = this.iuserRepository.findByUsername(userModel.getUsername());
+//        if (created != null) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario ja existente");
+//        } else {
+//            var hahssenha= BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray());
+//            userModel.setPassword(hahssenha);
+//            var salvar = this.iuserRepository.save(userModel);
+//            return ResponseEntity.status(HttpStatus.CREATED).body(salvar);
+//        }
+//    }
     @GetMapping("/List")
     public List<UserModel> listall(){
         List<UserModel> usuariocad = iuserRepository.findAll();
@@ -82,4 +83,33 @@ public class UserController {
         mv.addObject("UserModel", new UserModel());
         return mv;
     }
+    @PostMapping("/cadastro")
+    public void cadastro(UserModel userModel) {
+        System.out.println("Aqui");
+        var hahssenha= BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray());
+        userModel.setPassword(hahssenha);
+        System.out.println(hahssenha);
+        var save=iuserRepository.save(userModel);
+        System.out.println("2222");
+        System.out.println(save);
+    }
+    @GetMapping("/Listar")
+    public String buscarUsuario(@RequestParam("iduser") UUID iduser, Model model) {
+        Optional<UserModel> usuario = iuserRepository.findById(iduser);
+        if (usuario.isPresent()) {
+            model.addAttribute("usuario", usuario.get());
+        } else {
+            model.addAttribute("usuario", new UserModel());
+            model.addAttribute("notFound", true);// ou retornar erro
+        }
+        return "pesquisarUser"; // nome do seu HTML (sem extensão)
+    }
+
+    // Salva a atualização
+    @PostMapping("/atualizar")
+    public String atualizarUsuario(@ModelAttribute("usuario") UserModel userModel) {
+        iuserRepository.save(userModel);
+        return "redirect:/usuarios/buscar?id=" + userModel.getIduser(); // redireciona para mostrar os dados atualizados
+    }
+
 }
