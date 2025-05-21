@@ -63,17 +63,20 @@ public class UserController {
     @GetMapping("/atualizaUser")
     public ModelAndView Atualizar(){
       ModelAndView mv= new ModelAndView("userAtualizar");
+        mv.addObject("UserModel", new UserModel());
       return mv;  
     }
     @GetMapping("/pesquisarUser")
     public ModelAndView Pesquisar(){
         ModelAndView mv= new ModelAndView( "pesquisarUser");
+        mv.addObject("UserModel", new UserModel());
         return mv;
     }
 
     @GetMapping("/excluirUser")
     public ModelAndView Exluir(){
         ModelAndView mv= new ModelAndView("excluirUser");
+        mv.addObject("UserModel", new UserModel());
         return mv;
     }
     
@@ -97,13 +100,21 @@ public class UserController {
     public String buscarUsuario(@RequestParam("iduser") UUID iduser, Model model) {
         Optional<UserModel> usuario = iuserRepository.findById(iduser);
         if (usuario.isPresent()) {
-            model.addAttribute("usuario", usuario.get());
+            model.addAttribute("UserModel", usuario.get());
+            System.out.println(usuario.get());
+            System.out.println("coisas");
+            System.out.println(usuario.get().getEmail());
         } else {
-            model.addAttribute("usuario", new UserModel());
+            model.addAttribute("UserModel", new UserModel());
             model.addAttribute("notFound", true);// ou retornar erro
         }
-        return "pesquisarUser"; // nome do seu HTML (sem extensão)
+        return"UserModel/pesquisarUser";
     }
+
+
+
+
+
 
     // Salva a atualização
     @PostMapping("/atualizar")
