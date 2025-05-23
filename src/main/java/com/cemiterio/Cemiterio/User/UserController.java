@@ -3,8 +3,10 @@ package com.cemiterio.Cemiterio.User;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,7 +17,7 @@ import java.util.UUID;
 
 import static at.favre.lib.crypto.bcrypt.BCrypt.withDefaults;
 
-@RestController
+@Controller
 @RequestMapping("/User")
 public class UserController {
     @Autowired
@@ -104,11 +106,20 @@ public class UserController {
             System.out.println(usuario.get());
             System.out.println("coisas");
             System.out.println(usuario.get().getEmail());
+            usuario.stream().toList().forEach(System.out::println);
+            model.addAttribute("username", usuario.get().getUsername());
+            model.addAttribute("password", usuario.get().getPassword());
+            model.addAttribute("email", usuario.get().getEmail());
+            model.addAttribute("phone", usuario.get().getPhone());
+            model.addAttribute("address", usuario.get().getAddress());
+            model.addAttribute("role", usuario.get().getRole());
+
         } else {
             model.addAttribute("UserModel", new UserModel());
             model.addAttribute("notFound", true);// ou retornar erro
         }
-        return"UserModel/pesquisarUser";
+        return "userAtualizar";       
+        
     }
 
 
@@ -119,8 +130,10 @@ public class UserController {
     // Salva a atualização
     @PostMapping("/atualizar")
     public String atualizarUsuario(@ModelAttribute("usuario") UserModel userModel) {
+        var hahssenha= BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray());
+        userModel.setPassword(hahssenha);   
         iuserRepository.save(userModel);
-        return "redirect:/usuarios/buscar?id=" + userModel.getIduser(); // redireciona para mostrar os dados atualizados
+        return "redirect:/User/Listar?iduser=" + userModel.getIduser();
     }
 
 }
