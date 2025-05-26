@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http//www.thymeleaf.org">  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" type="text/css" media="all">
+    <title>Atualizar User</title>
+</head>
+<body>
+    <div class="container-cadastro">
+        <div class="container">
+            <h2>Atualizar Dados do Usuário</h2>
+    
+            <!-- Form para buscar usuário pelo ID -->
+            <form th:action="@{/User/Listar}" method="get">
+                <div class="form-group">
+                    <label for="iduser">ID do Usuário:</label>
+                    <input type="text" id="iduser" name="iduser" placeholder="Digite o ID do usuário" required />
+                    <button type="submit" class="btn-search">Pesquisar</button>
+                </div>
+            </form>
+    
+            <!-- Form para editar e atualizar usuário -->
+            <form th:action="@{/User/atualizar}" th:object="${UserModel}" method="post">
+                <input type="hidden" th:field="*{iduser}" /> <!-- Oculto, mas necessário -->
+    
+                <div class="form-group">
+                    <label for="username">Nome de Usuário:</label>
+                    <input type="text" id="username" th:field="*{username}" placeholder="Nome de Usuário" required />
+                </div>
+    
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" th:field="*{password}" placeholder="Senha" required />
+                </div>
+    
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" th:field="*{email}" placeholder="E-mail" required />
+                </div>
+    
+                <div class="form-group">
+                    <label for="phone">Telefone:</label>
+                    <input type="text" id="phone" th:field="*{phone}" placeholder="Telefone" required />
+                </div>
+    
+                <div class="form-group">
+                    <label for="address">Endereço:</label>
+                    <input type="text" id="address" th:field="*{address}" placeholder="Endereço" required />
+                </div>
+    
+                <div class="form-group">
+                    <label for="role">Função:</label>
+                    <select id="role" th:field="*{role}" required>
+                        <option value="USER">Usuário</option>
+                        <option value="ADMIN">Administrador</option>
+                    </select>
+                </div>
+    
+                <button type="submit" class="btn">Atualizar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
