@@ -2,12 +2,15 @@ package com.cemiterio.Cemiterio.DeadUser;
 
 import com.cemiterio.Cemiterio.DeadUser.DeadUserModel;
 import com.cemiterio.Cemiterio.DeadUser.IDeadUserRepository;
+import com.cemiterio.Cemiterio.Sector.ISectorRepository;
+import com.cemiterio.Cemiterio.User.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,9 +20,16 @@ public class DeadUserController {
 
     @Autowired
     private IDeadUserRepository deadUserRepository;
+    @Autowired
+    private ISectorRepository sectorRepository;
+
+    @Autowired
+    private IUserRepository userRepository;
     @GetMapping("/cadastrodead")
-    public ModelAndView cadastrodead(){
+    public ModelAndView cadastrodead(Model model){
         ModelAndView mv = new ModelAndView("Deaduser/create_deaduser");
+        model.addAttribute("setores", sectorRepository.findAll());
+        model.addAttribute("usuarios", userRepository.findAll());
         mv.addObject("deadUser", new DeadUserModel());
         return mv;
     }
@@ -54,8 +64,18 @@ public class DeadUserController {
         deadUserRepository.save(deadUser);
         model.addAttribute("mensagem", "Registro salvo com sucesso!");
         model.addAttribute("deadUser", new DeadUserModel());
-        return "deaduser/create_deaduser";
+        return "redirect:/deaduser/form";
     }
+    @GetMapping("/form")
+    public String mostrarFormulario(Model model) {
+        model.addAttribute("deadUser", new DeadUserModel());
+        model.addAttribute("setores", sectorRepository.findAll());
+        System.out.println("setores");
+        model.addAttribute("usuarios", userRepository.findAll());
+        System.out.println("usuarios");
+        return "cadastrarFalecido"; // nome do HTML
+    }
+
 
     // Buscar DeadUser por ID
     @GetMapping("/buscar")

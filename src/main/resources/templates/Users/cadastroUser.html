@@ -13,7 +13,7 @@
     <div class="container">
     <h2>Cadastro de Usuário</h2>
 
-    <form th:action="@{/User/cadastro}"  th:object="${UserModel}" method="post">
+    <form th:action="@{/User/cadastro}"  th:object="${UserModel}" method="post" th:if="${UserModel != null} ">
         
         <div class="form-group">
             <label for="username">Nome de Usuário:</label>
@@ -45,13 +45,13 @@
             <select id="role" th:field="${UserModel.role}" required>
                 <option value="USER">Usuário</option>
                 <option value="ADMIN">Administrador</option>
+                <option value="Gravedigger">Coveiro</option>
             </select>
         </div>
 
         <button type="submit" class="btn">Cadastrar</button>
     </form>
-
-    
+<p th:if="${mensagem != null}" th:text="${mensagem}" style="color:green;"></p>
 </div>
 </div>
 </body>

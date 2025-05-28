@@ -4,8 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import com.cemiterio.Cemiterio.Sector.SectorModel;
+import com.cemiterio.Cemiterio.User.UserModel;
 
 import java.util.UUID;
+
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 
 @Entity(name = "Tb_DeadUser")
 public class DeadUserModel {
@@ -15,8 +21,14 @@ public class DeadUserModel {
     private String name;
     private String description;
     private String gravedigger;
-    private String fksector;
-    private UUID fkuser;
+    @ManyToOne
+    @JoinColumn(name = "fksector", nullable = false)
+    private SectorModel fksector;
+
+    @ManyToOne
+    @JoinColumn(name = "fkuser", nullable = false)
+    private UserModel fkuser;
+
 
     public UUID getIdDeadUser() {
         return idDeadUser;
@@ -42,19 +54,19 @@ public class DeadUserModel {
         this.description = description;
     }
 
-    public String getFksector() {
+    public SectorModel getFksector() {
         return fksector;
     }
 
-    public void setFksector(String fksector) {
+    public void setFksector(SectorModel fksector) {
         this.fksector = fksector;
     }
 
-    public UUID getFkuser() {
+    public UserModel getFkuser() {
         return fkuser;
     }
 
-    public void setFkuser(UUID fkuser) {
+    public void setFkuser(UserModel fkuser) {
         this.fkuser = fkuser;
     }
 

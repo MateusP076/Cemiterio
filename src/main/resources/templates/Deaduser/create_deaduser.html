@@ -22,12 +22,23 @@
         <label>Coveiro Responsável:</label>
         <input type="text" th:field="*{gravedigger}" required><br>
 
-        <label>Setor (fksector):</label>
-        <input type="text" th:field="*{fksector}" required><br>
+        <label>Setor:</label>
+    <select th:field="*{fksector}" required>
+        <option value="" disabled selected>Selecione um setor</option>
+        <option th:each="setor : ${setores}"
+                th:value="${setor.id_sector}"
+                th:text="${setor.sectorname}">
+        </option>
+    </select><br>
 
-        <label>ID do Usuário (fkuser):</label>
-        <input type="text" th:field="*{fkuser}" required><br>
-
+    <label>Usuário:</label>
+    <select th:field="*{fkuser}" required>
+        <option value="" disabled selected>Selecione um usuário</option>
+        <option th:each="usuarios : ${usuarios}"
+        th:value="${usuarios.getiduser()}"
+        th:text="${usuarios.username}">
+        </option>
+    </select><br>
         <button type="submit">Salvar</button>
     </form>
     </div>

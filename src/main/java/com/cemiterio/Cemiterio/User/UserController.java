@@ -90,14 +90,13 @@ public class UserController {
         return mv;
     }
     @PostMapping("/cadastro")
-    public void cadastro(UserModel userModel) {
+    public String cadastro(UserModel userModel, Model model) {
         System.out.println("Aqui");
         var hahssenha= BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray());
         userModel.setPassword(hahssenha);
-        System.out.println(hahssenha);
         var save=iuserRepository.save(userModel);
-        System.out.println("2222");
-        System.out.println(save);
+        model.addAttribute("mensagem", "Setor cadastrado com sucesso!");
+        return "Users/cadastroUser";
     }
     @GetMapping("/Listar")
     public String buscarUsuario(@RequestParam("iduser") UUID iduser, Model model) {
