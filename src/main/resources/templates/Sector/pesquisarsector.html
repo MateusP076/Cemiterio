@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Setor</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+<div class="container-cadastro">
+    <div class="container">
+    <h2>Buscar Setor</h2>
+
+    <form method="get" th:action="@{/sector/buscar}">
+        <label>ID do Setor:</label>
+        <input type="text" name="id_sector" required />
+        <button type="submit">Buscar</button>   
+    
+
+    <div th:if="${sector != null}" th:object="${sector}">
+        <h3>Setor Encontrado</h3>
+        <p><strong>ID:</strong> <span th:text="*{id_sector}"></span></p>
+        <p><strong>Nome:</strong> <span th:text="*{sectorname}"></span></p>
+        <p><strong>Descrição:</strong> <span th:text="*{sectorDescription}"></span></p>
+        <p><strong>Condição:</strong> <span th:text="*{sectorCondition}"></span></p>
+    </div>
+
+    <p th:if="${erro != null}" th:text="${erro}" style="color:red;"></p>
+    </form>
+    </div>
+</div>
+</body>
+</html>

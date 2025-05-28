@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Atualizar Setor</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+<div class="container-cadastro">
+    <div class="container">
+    <h2>Atualizar Setor</h2>
+
+    <form method="get" th:action="@{/sector/editar}">
+        <label>ID do Setor:</label>
+        <input type="text" name="id_sector" required />
+        <button type="submit">Buscar</button>
+    </form>
+
+    <form method="post" th:action="@{/sector/atualizar}" th:object="${sector}" th:if="${sector != null}">
+        <input type="hidden" th:field="*{id_sector}" />
+
+        <label>Nome:</label>
+        <input type="text" th:field="*{sectorname}" required /><br>
+
+        <label>Descrição:</label>
+        <input type="text" th:field="*{sectorDescription}" required /><br>
+
+        <label>Condição:</label>
+        <input type="text" th:field="*{sectorCondition}" required /><br>
+
+        <button type="submit">Atualizar</button>
+    </form>
+
+    <p th:if="${mensagem != null}" th:text="${mensagem}" style="color:green;"></p>
+    <p th:if="${erro != null}" th:text="${erro}" style="color:red;"></p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <html xmlns:th="http//www.thymeleaf.org">       
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" type="text/css" media="all">
+    <title>Excluir User</title>
+</head>
+<body>
+ <div class="container-cadastro">
+    <div class="container">
+            <h2>Excluir o Usuário</h2>
+    
+            <form th:action="@{/User/Excluir}" method="get">
+                <div class="form-group">
+                    <label for="iduser">ID do Usuário:</label>
+                    <input type="text" id="iduser" name="iduser" placeholder="Digite o ID do usuário" required />
+                    <button type="submit" class="btn-search">Pesquisar</button>
+                </div>
+            </form>
+
+            <form th:action="@{/User/Excluir}" th:object="${UserModel}" method="post"  th:if="${UserModel != null}"> 
+                <input type="hidden" th:field="*{iduser}" />
+                <p>Tem certeza que deseja excluir o Usuário <strong th:text="*{username}"></strong>?</p>
+                <button type="submit">Confirmar Exclusão</button>
+            </form>
+            <p th:if="${mensagem != null}" th:text="${mensagem}" style="color:green;"></p>
+            <p th:if="${erro != null}" th:text="${erro}" style="color:red;"></p>
+    </div>
+</div>
+</body>
+</html>

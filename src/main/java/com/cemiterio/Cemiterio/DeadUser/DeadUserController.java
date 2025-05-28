@@ -1,55 +1,116 @@
 package com.cemiterio.Cemiterio.DeadUser;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.cemiterio.Cemiterio.User.UserModel;
-import jakarta.servlet.http.HttpServletRequest;
+import com.cemiterio.Cemiterio.DeadUser.DeadUserModel;
+import com.cemiterio.Cemiterio.DeadUser.IDeadUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/DeadUser")
+@Controller
+@RequestMapping("/deaduser")
 public class DeadUserController {
+
     @Autowired
-    private IDeadUserRepository iDeadUserRepository;
-    @GetMapping("/Text")
-    public String Text() {
-        return "Sentimos muito a sua perda porem esperamos pode ajudar com tudo necessário";
+    private IDeadUserRepository deadUserRepository;
+    @GetMapping("/cadastrodead")
+    public ModelAndView cadastrodead(){
+        ModelAndView mv = new ModelAndView("Deaduser/create_deaduser");
+        mv.addObject("deadUser", new DeadUserModel());
+        return mv;
+    }
+    @GetMapping("/pesquisardead")
+    public ModelAndView pesquisadead(){
+        ModelAndView mv= new ModelAndView("Deaduser/search_deaduser");
+        mv.addObject("deadUser", new DeadUserModel());
+        return mv;
+    }
+    @GetMapping("/atualizadead")
+    public ModelAndView atualizadead(){
+        ModelAndView mv= new ModelAndView("Deaduser/update_deaduser");
+        mv.addObject("deadUser", new DeadUserModel());
+        return mv;
+    }
+    @GetMapping("/excluirdead")
+    public ModelAndView excluirdead(){
+        ModelAndView mv=new ModelAndView("Deaduser/delete_deaduser");
+        mv.addObject("deadUser", new DeadUserModel());
+        return mv;
+    }
+    // Formulário de criação
+    @GetMapping("/novo")
+    public String novoForm(Model model) {
+        model.addAttribute("deadUser", new DeadUserModel());
+        return "deaduser/create_deaduser";
     }
 
-    @PostMapping("/CreateDeadUser")
-    public ResponseEntity   CreateDeadUser(@RequestBody DeadUserModel deadUserModel, HttpServletRequest request) {
-        var created = this.iDeadUserRepository.findByName(deadUserModel.getName());
-        if (created != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nome ja existente");
-        } else {
-//            var hahsdescription= BCrypt.withDefaults().hashToString(12, deadUserModel.getDescription().toCharArray());
-//            deadUserModel.setDescription(hahsdescription);
+    // Salvar novo DeadUser
+    @PostMapping("/criar")
+    public String criar(@ModelAttribute DeadUserModel deadUser, Model model) {
+        deadUserRepository.save(deadUser);
+        model.addAttribute("mensagem", "Registro salvo com sucesso!");
+        model.addAttribute("deadUser", new DeadUserModel());
+        return "deaduser/create_deaduser";
+    }
 
-            var fkuser=request.getSession().getAttribute("user");
-            deadUserModel.setFkuser((UUID) fkuser);
-            var salvar = this.iDeadUserRepository.save(deadUserModel);
-            return ResponseEntity.status(HttpStatus.CREATED).body(salvar);
+    // Buscar DeadUser por ID
+    @GetMapping("/buscar")
+    public String buscar(@RequestParam(name = "idDeadUser", required = false) UUID id, Model model) {
+        if (id != null) {
+            Optional<DeadUserModel> resultado = deadUserRepository.findById(id);
+            if (resultado.isPresent()) {
+                model.addAttribute("deadUser", resultado.get());
+            } else {
+                model.addAttribute("erro", "Falecido não encontrado.");
+            }
         }
-
-
-    }
-    @GetMapping("/ListDeadUser")
-    public List<DeadUserModel> listDeadUser() {
-        return this.iDeadUserRepository.findAll();
+        return "deaduser/search_deaduser";
     }
 
-    @PutMapping("/Update")
-    public ResponseEntity update(@RequestBody DeadUserModel deadUserModel) {
-        var criado= this.iDeadUserRepository.save(deadUserModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(criado);
+    // Editar - carregar formulário
+    @GetMapping("/editar")
+    public String editar(@RequestParam UUID idDeadUser, Model model) {
+        Optional<DeadUserModel> resultado = deadUserRepository.findById(idDeadUser);
+        if (resultado.isPresent()) {
+            model.addAttribute("deadUser", resultado.get());
+            return "deaduser/update_deaduser";
+        } else {
+            model.addAttribute("erro", "Falecido não encontrado.");
+            return "deaduser/search-deaduser";
+        }
     }
-    @DeleteMapping("/Delete/{iduser}")
-    public void delete(@PathVariable UUID iduser) {
-        iDeadUserRepository.deleteById(iduser);
+
+    // Atualizar DeadUser
+    @PostMapping("/atualizar")
+    public String atualizar(@ModelAttribute DeadUserModel deadUser, Model model) {
+        deadUserRepository.save(deadUser); // save também atualiza se já existir ID
+        model.addAttribute("mensagem", "Dados atualizados com sucesso.");
+        model.addAttribute("deadUser", deadUser);
+        return "deaduser/update_deaduser";
+    }
+
+    // Excluir - confirmar
+    @GetMapping("/excluir")
+    public String excluirForm(@RequestParam UUID idDeadUser, Model model) {
+        Optional<DeadUserModel> resultado = deadUserRepository.findById(idDeadUser);
+        if (resultado.isPresent()) {
+            model.addAttribute("deadUser", resultado.get());
+            return "deaduser/delete_deaduser";
+        } else {
+            model.addAttribute("erro", "Falecido não encontrado.");
+            return "deaduser/search_deaduser";
+        }
+    }
+
+    // Excluir - executar
+    @PostMapping("/excluir")
+    public String excluir(@ModelAttribute DeadUserModel deadUser, Model model) {
+        deadUserRepository.deleteById(deadUser.getIdDeadUser());
+        model.addAttribute("mensagem", "Falecido excluído com sucesso.");
+        return "deaduser/delete_deaduser";
     }
 }

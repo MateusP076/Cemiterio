@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Falecido</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+<div class="container-cadastro">
+    <div class="container">
+
+        
+    <h2>Cadastrar Falecido</h2>
+
+    <form method="post" th:action="@{/deaduser/criar}" th:object="${deadUser}">
+        <label>Nome:</label>
+        <input type="text" th:field="*{name}" required><br>
+
+        <label>Descrição:</label>
+        <input type="text" th:field="*{description}" required><br>
+
+        <label>Coveiro Responsável:</label>
+        <input type="text" th:field="*{gravedigger}" required><br>
+
+        <label>Setor (fksector):</label>
+        <input type="text" th:field="*{fksector}" required><br>
+
+        <label>ID do Usuário (fkuser):</label>
+        <input type="text" th:field="*{fkuser}" required><br>
+
+        <button type="submit">Salvar</button>
+    </form>
+    </div>
+</div>
+</body>
+</html>

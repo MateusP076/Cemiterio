@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Excluir Setor</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+<div class="container-cadastro">   
+    <div class="container">
+    <h2>Excluir Setor</h2>
+
+    <form method="get" th:action="@{/sector/excluir}">
+        <label>ID do Setor:</label>
+        <input type="text" name="id_sector" required />
+        <button type="submit">Buscar</button>
+    </form>
+
+    <form method="post" th:action="@{/sector/excluir}" th:object="${sector}" th:if="${sector != null}">
+        <input type="hidden" th:field="*{id_sector}" />
+        <p>Tem certeza que deseja excluir o setor <strong th:text="*{sectorname}"></strong>?</p>
+        <button type="submit">Confirmar Exclusão</button>
+    </form>
+
+    <p th:if="${mensagem != null}" th:text="${mensagem}" style="color:green;"></p>
+    <p th:if="${erro != null}" th:text="${erro}" style="color:red;"></p>
+    </div> 
+</div>
+</body>
+</html>

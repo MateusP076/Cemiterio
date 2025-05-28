@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Início - Falecidos</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+    <header>
+    <h1>Gerenciamento de Falecidos</h1>
+    </header>
+    <nav>
+        <a th:href="@{/deaduser/cadastrodead}"> Cadastrar Falecido</a>
+        <a th:href="@{/deaduser/pesquisardead}"> Pesquisar Falecido</a>
+        <a th:href="@{/deaduser/atualizadead}"> Atualizar Falecido</a>
+        <a th:href="@{/deaduser/excluirdead}"> Excluir Falecido</a>
+    </nav>   
+    <footer></footer> 
+</body>
+</html>
