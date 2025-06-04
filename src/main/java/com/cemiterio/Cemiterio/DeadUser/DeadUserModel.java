@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 import com.cemiterio.Cemiterio.Sector.SectorModel;
 import com.cemiterio.Cemiterio.User.UserModel;
 
@@ -14,6 +16,7 @@ import java.util.UUID;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 
 @Entity(name = "Tb_DeadUser")
+@Table(name="Tb_Deaduser")
 public class DeadUserModel {
     @Id
     @GeneratedValue(generator = "UUID")

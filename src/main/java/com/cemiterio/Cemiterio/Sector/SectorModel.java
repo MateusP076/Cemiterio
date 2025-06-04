@@ -3,10 +3,12 @@ package com.cemiterio.Cemiterio.Sector;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.util.UUID;
 
 @Entity(name = "TB_Sector")
+@Table(name="TB_Sector")
 public class SectorModel {
     @Id
     @GeneratedValue(generator = "UUID")

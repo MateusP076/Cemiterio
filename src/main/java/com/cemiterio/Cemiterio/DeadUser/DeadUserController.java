@@ -73,7 +73,7 @@ public class DeadUserController {
         System.out.println("setores");
         model.addAttribute("usuarios", userRepository.findAll());
         System.out.println("usuarios");
-        return "cadastrarFalecido"; // nome do HTML
+        return "Deaduser/create_deaduser"; // nome do HTML
     }
 
 

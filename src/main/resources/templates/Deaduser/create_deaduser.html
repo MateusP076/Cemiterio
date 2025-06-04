@@ -19,8 +19,8 @@
         <label>Descrição:</label>
         <input type="text" th:field="*{description}" required><br>
 
-        <label>Coveiro Responsável:</label>
-        <input type="text" th:field="*{gravedigger}" required><br>
+        <label>Id do Responsável:</label>
+        <input type="text" th:field="*{fkuser}" required><br>
 
         <label>Setor:</label>
     <select th:field="*{fksector}" required>
@@ -31,8 +31,8 @@
         </option>
     </select><br>
 
-    <label>Usuário:</label>
-    <select th:field="*{fkuser}" required>
+    <label>Coveiro:</label>
+    <select th:field="*{gravedigger}" required>
         <option value="" disabled selected>Selecione um usuário</option>
         <option th:each="usuarios : ${usuarios}"
         th:value="${usuarios.getiduser()}"
