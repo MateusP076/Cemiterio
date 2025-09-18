@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Excluir Falecido</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+<div class="container-cadastro">
+    <div class="container">
+
+        
+    <h2>Excluir Registro de Falecido</h2>
+
+    <form method="get" th:action="@{/deaduser/excluir}">
+        <label>ID do Falecido:</label>
+        <input type="text" name="idDeadUser" required><br>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <form method="post" th:action="@{/deaduser/excluir}" th:object="${deadUser}" th:if="${deadUser != null}">
+        <input type="hidden" th:field="*{idDeadUser}" />
+        <p>Deseja realmente excluir o registro de <strong th:text="*{name}">?</strong></p>
+        <button type="submit">Confirmar Exclusão</button>
+    </form>
+
+    <p th:if="${mensagem}" th:text="${mensagem}" style="color:green;"></p>
+    </div>
+</div>
+</body>
+</html>
+

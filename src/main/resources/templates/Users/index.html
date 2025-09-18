@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http//www.thymeleaf.org"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina Inicial</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" type="text/css" media="all">
+</head>
+<body>
+    <header>
+        <h1>Bem-vindo à Página Inicial</h1>
+    </header>
+
+    <nav>
+        <a th:href="@{/User/cadastro}">Cadastro de Usuario</a>
+        <a th:href="@{/User/atualizaUser}">Atualizar Usuario</a>
+        <a th:href="@{/User/pesquisarUser}">Pesquisar Usuario</a>
+        <a th:href="@{/User/excluirUser}">Exclusao de Usuario</a>
+        <a href="">Sobre nós</a>
+    </nav>
+
+    <footer>
+        <p>&copy; 2025 Meu Site. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>

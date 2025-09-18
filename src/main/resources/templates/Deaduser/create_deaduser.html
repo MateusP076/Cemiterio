@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Falecido</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+<div class="container-cadastro">
+    <div class="container">
+
+        
+    <h2>Cadastrar Falecido</h2>
+
+    <form method="post" th:action="@{/deaduser/criar}" th:object="${deadUser}">
+        <label>Nome:</label>
+        <input type="text" th:field="*{name}" required><br>
+
+        <label>Descrição:</label>
+        <input type="text" th:field="*{description}" required><br>
+
+        <label>Id do Responsável:</label>
+        <input type="text" th:field="*{fkuser}" required><br>
+
+        <label>Setor:</label>
+    <select th:field="*{fksector}" required>
+        <option value="" disabled selected>Selecione um setor</option>
+        <option th:each="setor : ${setores}"
+                th:value="${setor.id_sector}"
+                th:text="${setor.sectorname}">
+        </option>
+    </select><br>
+
+    <label>Coveiro:</label>
+    <select th:field="*{gravedigger}" required>
+        <option value="" disabled selected>Selecione um usuário</option>
+        <option th:each="usuarios : ${usuarios}"
+        th:value="${usuarios.getiduser()}"
+        th:text="${usuarios.username}">
+        </option>
+    </select><br>
+        <button type="submit">Salvar</button>
+    </form>
+    </div>
+</div>
+</body>
+</html>

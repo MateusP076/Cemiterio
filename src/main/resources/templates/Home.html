@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Início - Sistema de Gestão</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+    
+        <header>
+        <h1>Sistema de Gestão</h1>
+        <p>Escolha uma área para gerenciar:</p>
+    </header>
+        <nav>
+            <a th:href="@{/sector}">Gerenciar Setores</a>
+            <a th:href="@{/user}">Gerenciar Usuários</a>
+            <a th:href="@{/deaduser}">Gerenciar DeadUSers</a>
+        </nav>
+        <footer>
+            <p>&copy; 2025 Meu Site. Todos os direitos reservados.</p>
+        </footer>
+    
+</body>
+</html>

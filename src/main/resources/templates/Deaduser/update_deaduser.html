@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Atualizar Falecido</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+<div class="container-cadastro">
+    <div class="container">
+
+
+    <h2>Atualizar Dados do Falecido</h2>
+
+    <form method="get" th:action="@{/deaduser/editar}">
+        <label>ID do Falecido:</label>
+        <input type="text" name="idDeadUser" required><br>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <form method="post" th:action="@{/deaduser/atualizar}" th:object="${deadUser}" th:if="${deadUser != null}">
+        <input type="hidden" th:field="*{idDeadUser}" />
+
+        <label>Nome:</label>
+        <input type="text" th:field="*{name}" required><br>
+
+        <label>Descrição:</label>
+        <input type="text" th:field="*{description}" required><br>
+
+        <label>Coveiro:</label>
+        <input type="text" th:field="*{gravedigger}" required><br>
+
+        <label>Setor:</label>
+        <input type="text" th:field="*{fksector}" required><br>
+
+        <label>ID do Usuário:</label>
+        <input type="text" th:field="*{fkuser}" required><br>
+
+        <button type="submit">Atualizar</button>
+    </form>
+    </div>
+</div>    
+</body>
+</html>
